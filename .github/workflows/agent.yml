@@ -23,6 +23,11 @@ jobs:
 
       - name: Exécuter main.py
         run: python main.py
+      - name: Lister les fichiers et l’état git
+        run: |
+          pwd
+          ls -la
+          git status --porcelain
 
       - name: Commit des résultats
         run: |
