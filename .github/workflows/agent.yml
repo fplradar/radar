@@ -1,0 +1,38 @@
+name: FPL Radar automatique
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # Tous les jours à 06h00 UTC (07h00 heure de Paris en hiver)
+  workflow_dispatch:       # Permet aussi de lancer manuellement
+
+permissions:
+  contents: write          # Autoriser l’action à modifier ton dépôt
+
+jobs:
+  run-agent:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Exécuter main.py
+        run: python main.py
+
+      - name: Commit des résultats
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git diff --quiet && echo "Aucun changement" || git commit -m "Mise à jour automatique"
+      
+      - name: Pousser les changements
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
