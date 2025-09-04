@@ -29,12 +29,18 @@ jobs:
           ls -la
           git status --porcelain
 
-      - name: Commit des résultats
+           - name: Commit des résultats
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git diff --quiet && echo "Aucun changement" || git commit -m "Mise à jour automatique"
+          # Vérifie les changements STAGÉS (index) vs HEAD :
+          if git diff --cached --quiet; then
+            echo "Aucun changement à commit."
+          else
+            git commit -m "Mise à jour automatique"
+          fi
+
       
       - name: Pousser les changements
         uses: ad-m/github-push-action@v0.6.0
