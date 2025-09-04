@@ -1,9 +1,7 @@
 name: FPL Radar automatique
 
 on:
-  schedule:
-    - cron: '0 6 * * *'   # Tous les jours à 06h00 UTC
-  workflow_dispatch:       # Lancer manuellement si besoin
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -24,14 +22,19 @@ jobs:
       - name: Exécuter main.py
         run: python main.py
 
-      - name: Commit et push des résultats
+      - name: Commit des résultats
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add résumé.md || true
+          git add -A
           if git diff --cached --quiet; then
             echo "Aucun changement à commit."
           else
-            git commit -m "Mise à jour automatique"
-            git push
+            git commit -m "auto: update"
           fi
+
+      - name: Pousser les changements
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
