@@ -23,4 +23,4 @@ jobs:
           git config user.email "github-actions@github.com"
           git add fpl_summaries/
           git commit -m "Résumé FPL auto quotidien" || echo "Rien à commit"
-          git push
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:${{ github.ref }}
