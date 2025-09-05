@@ -15,7 +15,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - run: pip install youtube-transcript-api feedparser
+      - run: pip install --upgrade pip && pip install youtube-transcript-api feedparser requests
+
       - run: python youtube_fpl_agent.py
       - name: Commit et push du résumé
         run: |
