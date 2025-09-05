@@ -1,9 +1,10 @@
 name: FPL Résumé automatique quotidien
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 7 * * *'  # Tous les jours à 7h UTC
-workflow_dispatch:
+
 permissions:
   contents: write
 
@@ -15,13 +16,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - run: pip install --upgrade pip && pip install youtube-transcript-api feedparser requests
-      - run: python youtube_fpl_agent.py
-      - name: Commit et push du résumé
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install youtube-transcript-api feedparser requests
+      - name: Run script
+        run: python youtube_fpl_agent.py
+      - name: Commit and push summaries
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add fpl_summaries/
           git commit -m "Résumé FPL auto quotidien" || echo "Rien à commit"
           git push
-
