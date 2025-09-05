@@ -1,10 +1,9 @@
 name: FPL Résumé automatique quotidien
 
 on:
-  workflow_dispatch:
   schedule:
     - cron: '0 7 * * *'  # Tous les jours à 7h UTC
-
+  workflow_dispatch:
 permissions:
   contents: write
 
