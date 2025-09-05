@@ -4,6 +4,19 @@ import feedparser
 
 def collect_videos(feed):
     videos = []
+from youtube_transcript_api import YouTubeTranscriptApi
+
+def fetch_transcript(video_id):
+    """
+    Récupère la transcription brute d'une vidéo YouTube si disponible.
+    Retourne une chaîne de caractères ou None.
+    """
+    try:
+        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=["fr", "en"])
+        return " ".join([t["text"] for t in transcript])
+    except Exception as e:
+        print(f"⚠️ Erreur lors de la récupération de la transcription pour {video_id} : {e}")
+        return None
 
     for entry in getattr(feed, 'entries', []):
         published_dt = None
