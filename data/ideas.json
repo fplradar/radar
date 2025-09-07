@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Idée A",
+    "description": "Première idée test.",
+    "metrics": { "views": 100, "score": 7.5 },
+    "image_url": "https://via.placeholder.com/200"
+  },
+  {
+    "title": "Idée B",
+    "description": "Deuxième idée test.",
+    "metrics": { "views": 250, "score": 8.2 },
+    "image_url": "https://via.placeholder.com/200"
+  }
+]
