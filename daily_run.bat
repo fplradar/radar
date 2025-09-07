@@ -5,6 +5,7 @@ setlocal enabledelayedexpansion
 :: ================================
 :: Script quotidien FPL Radar
 :: Génère résumés, images placeholders, voix Hazel UK, vidéo finale
+:: + Exporte les idées du jour vers data/ideas.json
 :: + Génère un rapport HTML (avec images) et envoi Outlook optionnel
 :: ================================
 
@@ -17,13 +18,13 @@ echo 📅 Date du jour = %DATE%
 :: 2) Génération des résumés + scripts sociaux
 python youtube_fpl_agent.py --multi --limit 2 --generate-social --generate-images --voiceover
 
-:: 3) Génération d’images placeholders
+:: 3) Génération d’images placeholders (si tu utilises des placeholders)
 python render_placeholders.py %DATE%
 
 :: 4) Génération de la voix Hazel UK (locale)
 python tts_pyttsx3.py fpl_summaries\social_%DATE%.md social_audio\%DATE%\voice_uk_local_v2.wav Hazel 140 1.0 gentle
 
-:: 5) Génération du fichier list.txt (UTF-8 sans BOM)
+:: 5) Génération du fichier list.txt (UTF-8 sans BOM) pour ffmpeg
 powershell -Command ^
   "$files = Get-ChildItem .\social_images_out\%DATE%\*.png | Sort-Object Name; $lines=@(); for ($i=0; $i -lt $files.Count; $i++){ $p=$files[$i].FullName -replace '\\','/'; $lines += \"file '$p'\"; if ($i -lt $files.Count-1){ $lines += \"duration 5.6\" } }; [System.IO.File]::WriteAllLines('list.txt',$lines,(New-Object System.Text.UTF8Encoding($false)))"
 
@@ -36,6 +37,9 @@ C:\Users\admin\Downloads\ffmpeg-2025-09-01-git-3ea6c2fe25-essentials_build\bin\f
 powershell -ExecutionPolicy Bypass -Command "Import-Module BurntToast; New-BurntToastNotification -Text 'FPL Radar', 'Résumé du jour prêt !'"
 
 echo ✅ Terminé : vidéo disponible dans out\short_%DATE%.mp4
+
+:: 6.5) Export des idées du jour à partir des visuels -> data/ideas.json
+python export_ideas_today.py
 
 :: 7) Rapport HTML + envoi Outlook (si REPORT_EMAIL_TO est défini)
 python report_build_and_send.py

@@ -1,14 +1,47 @@
 [
   {
-    "title": "Idée A",
-    "description": "Première idée test.",
-    "metrics": { "views": 100, "score": 7.5 },
-    "image_url": "https://via.placeholder.com/200"
+    "title": "Aujourdhui dans FPL voici ce quil faut r",
+    "description": "Visuel social du 2025-09-07",
+    "metrics": {
+      "views": 0,
+      "score": 0
+    },
+    "image_path": "C:/Users/admin/Documents/radar/social_images_out/2025-09-07/01_01_Aujourdhui_dans_FPL_voici_ce_quil_faut_r.png"
   },
   {
-    "title": "Idée B",
-    "description": "Deuxième idée test.",
-    "metrics": { "views": 250, "score": 8.2 },
-    "image_url": "https://via.placeholder.com/200"
+    "title": "Watchlist Gameweek des noms ressortent c",
+    "description": "Visuel social du 2025-09-07",
+    "metrics": {
+      "views": 0,
+      "score": 0
+    },
+    "image_path": "C:/Users/admin/Documents/radar/social_images_out/2025-09-07/02_02_Watchlist_Gameweek_des_noms_ressortent_c.png"
+  },
+  {
+    "title": "Free Hit Mateta et un premium en attaque",
+    "description": "Visuel social du 2025-09-07",
+    "metrics": {
+      "views": 0,
+      "score": 0
+    },
+    "image_path": "C:/Users/admin/Documents/radar/social_images_out/2025-09-07/03_03_Free_Hit_Mateta_et_un_premium_en_attaque.png"
+  },
+  {
+    "title": "Tendances du jour Watchlist Free Hit et",
+    "description": "Visuel social du 2025-09-07",
+    "metrics": {
+      "views": 0,
+      "score": 0
+    },
+    "image_path": "C:/Users/admin/Documents/radar/social_images_out/2025-09-07/04_04_Tendances_du_jour_Watchlist_Free_Hit_et.png"
+  },
+  {
+    "title": "Tu veux ce genre de resume chaque jour P",
+    "description": "Visuel social du 2025-09-07",
+    "metrics": {
+      "views": 0,
+      "score": 0
+    },
+    "image_path": "C:/Users/admin/Documents/radar/social_images_out/2025-09-07/05_05_Tu_veux_ce_genre_de_resume_chaque_jour_P.png"
   }
 ]
