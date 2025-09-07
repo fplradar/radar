@@ -1,7 +1,7 @@
 name: FPL Radar automatique
 
 on:
-  workflow_dispatch:            # toujours possible de lancer à la main
+  workflow_dispatch:            # lancement manuel possible
   schedule:
     - cron: "0 10 * * *"        # Tous les jours à 10h UTC
 
@@ -18,22 +18,21 @@ jobs:
         with:
           python-version: '3.x'
 
-      # Génère (ou met à jour) un fichier resume.md pour garantir un commit quotidien
-      - name: Générer resume.md (rapport quotidien)
+      # Écrit un contenu FIXE (sans append) pour éviter tout doublon
+      - name: Générer resume.md (rapport quotidien, idempotent)
         run: |
           python - << 'PY'
           from datetime import datetime, timezone
-          import pathlib, platform
+          import pathlib, platform, textwrap
           now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
-          p = pathlib.Path("resume.md")
-          lines = [
-              "# Rapport FPL Radar",
-              "",
-              f"- Généré automatiquement : {now}",
-              f"- Runner : {platform.platform()}",
-          ]
-          p.write_text("\n".join(lines) + "\n", encoding="utf-8")
-          print("Écrit :", p.resolve())
+          content = textwrap.dedent(f"""\
+          # Rapport FPL Radar
+
+          - Généré automatiquement : {now}
+          - Runner : {platform.platform()}
+          """)
+          pathlib.Path("resume.md").write_text(content, encoding="utf-8")
+          print("Écrit : resume.md")
           PY
 
       # Commit ciblé du rapport
@@ -45,7 +44,7 @@ jobs:
           git commit -m "Update resume.md (auto)" || echo "Nothing to commit"
           git push
 
-      # Commit de tout autre artefact généré (si présent)
+      # Commit du reste du dépôt (s'il y a d'autres artefacts)
       - name: Commit des résultats (reste du dépôt)
         shell: bash
         run: |
