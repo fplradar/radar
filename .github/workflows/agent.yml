@@ -1,9 +1,9 @@
 name: FPL Radar automatique
 
 on:
-  workflow_dispatch:  # toujours possible de lancer à la main
+  workflow_dispatch:            # toujours possible de lancer à la main
   schedule:
-    - cron: "0 10 * * *"   # Tous les jours à 10h UTC
+    - cron: "0 10 * * *"        # Tous les jours à 10h UTC
 
 permissions:
   contents: write
@@ -18,16 +18,34 @@ jobs:
         with:
           python-version: '3.x'
 
-      - run: python main.py
+      # Génère (ou met à jour) un fichier resume.md pour garantir un commit quotidien
+      - name: Générer resume.md (rapport quotidien)
+        run: |
+          python - << 'PY'
+          from datetime import datetime, timezone
+          import pathlib, platform
+          now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S %Z")
+          p = pathlib.Path("resume.md")
+          lines = [
+              "# Rapport FPL Radar",
+              "",
+              f"- Généré automatiquement : {now}",
+              f"- Runner : {platform.platform()}",
+          ]
+          p.write_text("\n".join(lines) + "\n", encoding="utf-8")
+          print("Écrit :", p.resolve())
+          PY
 
-      - name: Commit and push changes
+      # Commit ciblé du rapport
+      - name: Commit and push resume.md
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add resume.md
-          git commit -m "Update resume.md" || echo "Nothing to commit"
+          git commit -m "Update resume.md (auto)" || echo "Nothing to commit"
           git push
 
+      # Commit de tout autre artefact généré (si présent)
       - name: Commit des résultats
         run: |
           git config --local user.email "action@github.com"
@@ -35,15 +53,10 @@ jobs:
           git add -A
           if git diff --cached --quiet; then
             echo "Aucun changement à commit."
-          else
+          else:
             git commit -m "auto: update"
+            git push
           fi
 
-      - name: Pousser les changements
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
-
       - name: Notification fin de workflow
-        run: echo "✅ Workflow terminé avec succès à $(date)"
+        run: echo "✅ Workflow terminé avec succès à $(date -u) (UTC)"
