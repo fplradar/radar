@@ -2,6 +2,9 @@
 chcp 65001 >nul
 setlocal enabledelayedexpansion
 
+:: Se placer dans le dossier du script (évite le champ "Démarrer dans")
+pushd "%~dp0"
+
 :: ================================
 :: Script quotidien FPL Radar
 :: Génère résumés, images placeholders, voix Hazel UK, vidéo finale
@@ -44,5 +47,7 @@ python export_ideas_today.py
 :: 7) Rapport HTML + envoi Outlook (si REPORT_EMAIL_TO est défini)
 python report_build_and_send.py
 
+:: Retour au dossier précédent
+popd
+
 endlocal
-pause
