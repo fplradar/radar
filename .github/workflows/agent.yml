@@ -46,16 +46,18 @@ jobs:
           git push
 
       # Commit de tout autre artefact généré (si présent)
-      - name: Commit des résultats
+      - name: Commit des résultats (reste du dépôt)
+        shell: bash
         run: |
+          set -e
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          if git diff --cached --quiet; then
-            echo "Aucun changement à commit."
-          else:
+          if ! git diff --cached --quiet; then
             git commit -m "auto: update"
             git push
+          else
+            echo "Aucun changement à commit."
           fi
 
       - name: Notification fin de workflow
