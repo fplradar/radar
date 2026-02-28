@@ -1,4 +1,4 @@
 # Rapport FPL Radar
 
-- Généré automatiquement : 2026-02-27 10:48:37 UTC
+- Généré automatiquement : 2026-02-28 10:30:58 UTC
 - Runner : Linux-6.14.0-1017-azure-x86_64-with-glibc2.39
